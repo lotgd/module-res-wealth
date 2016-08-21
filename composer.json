@@ -1,0 +1,24 @@
+{
+    "name": "lotgd/module-simple-wealth",
+    "description": "Gold and gem tracking for users.",
+    "type": "lotgd-module",
+    "license": "AGPL-3.0",
+    "authors": [
+        {
+            "name": "Austen McDonald",
+            "email": "austen.mcdonald@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "LotGD\\Modules\\SimpleWealth\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://code.lot.gd"
+        }
+    ],
+    "require": {}
+}
