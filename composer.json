@@ -20,5 +20,7 @@
             "url": "http://code.lot.gd"
         }
     ],
-    "require": {}
+    "require": {
+        "lotgd/core": "dev-master"
+    }
 }
