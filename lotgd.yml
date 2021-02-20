@@ -1,5 +1,8 @@
 entityNamespace: "LotGD\\Module\\Res\\Wealth\\Models"
 subscriptionPatterns:
     - "#h/lotgd/core/characterStats/populate#"
+    - "#h/lotgd/core/cli/character-config-list#"
+    - "#h/lotgd/core/cli/character-config-set#"
+    - "#h/lotgd/core/cli/character-config-reset#"
 modelExtensions:
     - "LotGD\\Module\\Res\\Wealth\\Models\\CharacterResWealthExtension"
