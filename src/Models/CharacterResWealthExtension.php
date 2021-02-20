@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LotGD\Modules\Res\Wealth\Models;
+namespace LotGD\Module\Res\Wealth\Models;
 
 use LotGD\Core\Doctrine\Annotations\Extension;
 use LotGD\Core\Doctrine\Annotations\ExtensionMethod;
 use LotGD\Core\Events\CharacterEventData;
 use LotGD\Core\Events\EventContextData;
 use LotGD\Core\Models\Character;
-use LotGD\Modules\Res\Wealth\Module;
+use LotGD\Module\Res\Wealth\Module;
 
 /**
  * API extension helpers for the character model

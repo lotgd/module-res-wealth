@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace LotGD\Modules\Res\Wealth\Tests;
+namespace LotGD\Module\Res\Wealth\Tests;
 
 use LotGD\Core\Events\EventContext;
 use LotGD\Core\Models\Character;
-use LotGD\Modules\Res\Wealth\Module;
-use LotGD\Modules\Res\Wealth\Tests\EventHandlers\AnyEventHandler;
+use LotGD\Module\Res\Wealth\Module;
+use LotGD\Module\Res\Wealth\Tests\EventHandlers\AnyEventHandler;
 
 class CharacterModelExtensionTest extends ModuleTest
 {

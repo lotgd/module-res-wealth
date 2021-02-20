@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace LotGD\Modules\Res\Wealth\Tests\EventHandlers;
+namespace LotGD\Module\Res\Wealth\Tests\EventHandlers;
 
 use LotGD\Core\EventHandler;
 use LotGD\Core\Events\EventContext;

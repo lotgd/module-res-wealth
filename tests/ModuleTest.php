@@ -1,18 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace LotGD\Modules\Res\Wealth\Tests;
+namespace LotGD\Module\Res\Wealth\Tests;
 
 use LotGD\Core\Events\EventContext;
 use LotGD\Core\Events\EventContextData;
-use LotGD\Modules\Res\Wealth\Module;
-use LotGD\Modules\Res\Wealth\Tests\EventHandlers\AnyEventHandler;
-use Monolog\Logger;
-use Monolog\Handler\NullHandler;
+use LotGD\Module\Res\Wealth\Module;
+use LotGD\Module\Res\Wealth\Tests\EventHandlers\AnyEventHandler;
 
-use LotGD\Core\Configuration;
 use LotGD\Core\Game;
-use LotGD\Core\Models\Character;
 use LotGD\Core\Models\Module as ModuleModel;
 use LotGD\Core\Tests\ModelTestCase;
 use Symfony\Component\Yaml\Yaml;

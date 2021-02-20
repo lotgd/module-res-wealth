@@ -1,4 +1,5 @@
-entityNamespace: "LotGD\\Modules\\Res\\Wealth\\Models"
+entityNamespace: "LotGD\\Module\\Res\\Wealth\\Models"
 subscriptionPatterns:
+    - "#h/lotgd/core/characterStats/populate#"
 modelExtensions:
-    - "LotGD\\Modules\\Res\\Wealth\\Models\\CharacterResWealthExtension"
+    - "LotGD\\Module\\Res\\Wealth\\Models\\CharacterResWealthExtension"

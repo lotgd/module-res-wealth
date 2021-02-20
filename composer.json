@@ -15,8 +15,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "LotGD\\Modules\\Res\\Wealth\\": "src/",
-            "LotGD\\Modules\\Res\\Wealth\\Tests\\": "tests/"
+            "LotGD\\Module\\Res\\Wealth\\": "src/",
+            "LotGD\\Module\\Res\\Wealth\\Tests\\": "tests/"
         }
     },
     "repositories": [
