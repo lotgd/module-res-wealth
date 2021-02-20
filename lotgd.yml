@@ -1,2 +1,4 @@
-entityNamespace:
+entityNamespace: "LotGD\\Modules\\Res\\Wealth\\Models"
 subscriptionPatterns:
+modelExtensions:
+    - "LotGD\\Modules\\Res\\Wealth\\Models\\CharacterResWealthExtension"

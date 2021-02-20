@@ -1,6 +1,12 @@
 <?php
 declare(strict_types=1);
 
+namespace LotGD\Modules\Res\Wealth\Tests;
+
+use LotGD\Core\Events\EventContext;
+use LotGD\Core\Events\EventContextData;
+use LotGD\Modules\Res\Wealth\Module;
+use LotGD\Modules\Res\Wealth\Tests\EventHandlers\AnyEventHandler;
 use Monolog\Logger;
 use Monolog\Handler\NullHandler;
 
@@ -9,101 +15,72 @@ use LotGD\Core\Game;
 use LotGD\Core\Models\Character;
 use LotGD\Core\Models\Module as ModuleModel;
 use LotGD\Core\Tests\ModelTestCase;
-
-use LotGD\Modules\SimpleWealth\Module;
+use Symfony\Component\Yaml\Yaml;
 
 class ModuleTest extends ModelTestCase
 {
-    const Library = 'lotgd/module-simple-wealth';
+    const Library = 'lotgd/module-res-wealth';
+    const RootNamespace = "LotGD\\Module\\Res\\Wealth\\";
 
-    private $g;
-    private $moduleModel;
+    /** @var Game */
+    public $g;
+    protected $moduleModel;
 
-    protected function getDataSet(): \PHPUnit_Extensions_Database_DataSet_YamlDataSet
+    public function getDataSet(): array
     {
-        return new \PHPUnit_Extensions_Database_DataSet_YamlDataSet(implode(DIRECTORY_SEPARATOR, [__DIR__, 'datasets', 'module.yml']));
+        return Yaml::parseFile(implode(DIRECTORY_SEPARATOR, [__DIR__, 'datasets', 'module.yml']));
     }
 
-    public function setUp()
+    public function getCwd(): string
+    {
+        return implode(DIRECTORY_SEPARATOR, [__DIR__, '..']);
+    }
+
+    public function setUp(): void
     {
         parent::setUp();
-
-        // Make an empty logger for these tests. Feel free to change this
-        // to place log messages somewhere you can easily find them.
-        $logger  = new Logger('test');
-        $logger->pushHandler(new NullHandler());
-
-        // Create a Game object for use in these tests.
-        $this->g = new Game(new Configuration(getenv('LOTGD_TESTS_CONFIG_PATH')), $logger, $this->getEntityManager(), implode(DIRECTORY_SEPARATOR, [__DIR__, '..']));
 
         // Register and unregister before/after each test, since
         // handleEvent() calls may expect the module be registered (for example,
         // if they read properties from the model).
         $this->moduleModel = new ModuleModel(self::Library);
+        $this->moduleModel->save($this->getEntityManager());
         Module::onRegister($this->g, $this->moduleModel);
+
+        // Event listener
+        $this->g->getEventManager()->subscribe("/(.*)/", AnyEventHandler::class, "lotgd/module-res-wealth");
+
+        $this->g->getEntityManager()->flush();
+        $this->g->getEntityManager()->clear();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
+        Module::onUnregister($this->g, $this->moduleModel);
+        $m = $this->getEntityManager()->getRepository(ModuleModel::class)->find(self::Library);
+        if ($m) {
+            $m->delete($this->getEntityManager());
+        }
+
+        $this->g->getEventManager()->unsubscribe("/(.*)/", AnyEventHandler::class, "lotgd/module-res-wealth");
+
+        $this->g->getEntityManager()->flush();
+        $this->g->getEntityManager()->clear();
+
         parent::tearDown();
-
-        Module::onUnregister($this->g, $this->moduleModel);
-    }
-
-    // TODO for LotGD staff: this test assumes the schema in their yaml file
-    // reflects all columns in the core's models of characters, scenes and modules.
-    // This is pretty fragile since every time we add a column, everyone's tests
-    // will break.
-    public function testUnregister()
-    {
-        Module::onUnregister($this->g, $this->moduleModel);
-
-        // Assert that databases are the same before and after.
-        // TODO for module author: update list of tables below to include the
-        // tables you modify during registration/unregistration.
-        $after = $this->getConnection()->createDataSet(['characters', 'scenes', 'modules']);
-        $before = $this->getDataSet();
-
-        $this->assertDataSetsEqual($before, $after);
-
-        // Since tearDown() contains an onUnregister() call, this also tests
-        // double-unregistering, which should be properly supported by modules.
     }
 
     public function testHandleUnknownEvent()
     {
         // Always good to test a non-existing event just to make sure nothing happens :).
-        $context = [];
-        Module::handleEvent($this->g, 'e/lotgd/tests/unknown-event', $context);
-    }
+        $context = new EventContext(
+            "e/lotgd/tests/unknown-event",
+            "none",
+            EventContextData::create([])
+        );
 
-    public function testGold()
-    {
-        $module = new Module($this->g);
+        $newContext = Module::handleEvent($this->g, $context);
 
-        // Test the default.
-        $user = $this->g->getEntityManager()->getRepository(Character::class)->find(1);
-        $result = $module->getGoldForUser($user);
-        $this->assertEquals(0, $result);
-
-        $user = $this->g->getEntityManager()->getRepository(Character::class)->find(2);
-        $module->setGoldForUser($user, 42);
-        $result = $module->getGoldForUser($user);
-        $this->assertEquals(42, $result);
-    }
-
-    public function testGems()
-    {
-        $module = new Module($this->g);
-
-        // Test the default.
-        $user = $this->g->getEntityManager()->getRepository(Character::class)->find(1);
-        $result = $module->getGemsForUser($user);
-        $this->assertEquals(0, $result);
-
-        $user = $this->g->getEntityManager()->getRepository(Character::class)->find(2);
-        $module->setGemsForUser($user, 42);
-        $result = $module->getGemsForUser($user);
-        $this->assertEquals(42, $result);
+        $this->assertSame($context, $newContext);
     }
 }

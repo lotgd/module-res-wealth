@@ -1,45 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace LotGD\Modules\SimpleWealth;
+namespace LotGD\Modules\Res\Wealth;
 
+use LotGD\Core\Events\EventContext;
 use LotGD\Core\Game;
 use LotGD\Core\Models\Character;
 use LotGD\Core\Module as ModuleInterface;
 use LotGD\Core\Models\Module as ModuleModel;
 
 class Module implements ModuleInterface {
-    const GoldProperty = 'lotgd/module-simple-wealth/gold';
-    const GemsProperty = 'lotgd/module-simple-wealth/gems';
+    const CharacterPropertyGold = 'lotgd/module-res-wealth/gold';
+    const CharacterPropertyGems = 'lotgd/module-res-wealth/gems';
+    const HookIncrementGold = "h/lotgd/module-res-wealth/gold/increment";
+    const HookIncrementGems = "h/lotgd/module-res-wealth/gems/increment";
 
     private $g;
 
-    public static function handleEvent(Game $g, string $event, array &$context) { }
+    public static function handleEvent(Game $g, EventContext $context): EventContext
+    {
+        return $context;
+    }
+
     public static function onRegister(Game $g, ModuleModel $module) { }
     public static function onUnregister(Game $g, ModuleModel $module) { }
-
-    public function __construct(Game $g)
-    {
-        $this->g = $g;
-    }
-
-    public function getGoldForUser(Character $user)
-    {
-        return $user->getProperty(self::GoldProperty, 0);
-    }
-
-    public function setGoldForUser(Character $user, int $gold)
-    {
-        return $user->setProperty(self::GoldProperty, $gold);
-    }
-
-    public function getGemsForUser(Character $user)
-    {
-        return $user->getProperty(self::GemsProperty, 0);
-    }
-
-    public function setGemsForUser(Character $user, int $gems)
-    {
-        return $user->setProperty(self::GemsProperty, $gems);
-    }
 }

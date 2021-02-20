@@ -1,6 +1,5 @@
 characters:
-    -
-        id: 1
+    -   id: "10000000-0000-0000-0000-000000000001"
         name: "Gandalf"
         displayName: "Gandalf the Grey"
         maxHealth: 100
@@ -8,9 +7,17 @@ characters:
         level: 1
         deletedAt:
     -
-        id: 2
+        id: "10000000-0000-0000-0000-000000000002"
         name: "Bilbo"
         displayName: "Bilbo of the Shire"
+        maxHealth: 100
+        health: 90
+        level: 1
+        deletedAt:
+    -
+        id: "10000000-0000-0000-0000-000000000003"
+        name: "Jörg"
+        displayName: "Jörg of the Hunters"
         maxHealth: 100
         health: 90
         level: 1
